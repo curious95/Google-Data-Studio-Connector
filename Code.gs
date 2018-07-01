@@ -29,7 +29,7 @@ function getConfig(request) {
   return config;
 };
 
-var fontDataSchema = [
+var DepartmentSchema = [
   {
     name: 'departmentCode',
     label: 'Department Code',
@@ -57,15 +57,15 @@ var fontDataSchema = [
 ];
 
 function getSchema(request) {
-  return {schema: fontDataSchema};
+  return {schema: DepartmentSchema};
 };
 
 function getData(request) {
   var dataSchema = [];
   request.fields.forEach(function(field) {
-    for (var i = 0; i < fontDataSchema.length; i++) {
-      if (fontDataSchema[i].name === field.name) {
-        dataSchema.push(fontDataSchema[i]);
+    for (var i = 0; i < DepartmentSchema.length; i++) {
+      if (DepartmentSchema[i].name === field.name) {
+        dataSchema.push(DepartmentSchema[i]);
         break;
       }
     }
