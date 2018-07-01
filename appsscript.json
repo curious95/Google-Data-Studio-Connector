@@ -1,0 +1,10 @@
+{
+  "dataStudio": {
+    "name": "EasyClocking",
+    "company": "OCC",
+    "logoUrl": "https://easyclocking.com/images/logo.png",
+    "addonUrl": "https://developers.google.com/datastudio/connector/getstarted",
+    "supportUrl": "https://developers.google.com/datastudio/connector/faq",
+    "description": "This connector uses the Fetches the data from EasyClocking using EasyLink API."
+  }
+}
