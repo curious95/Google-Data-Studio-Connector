@@ -6,6 +6,8 @@ function isAdminUser(){
 }
 
 function getConfig(request) {
+  
+  console.log("getConfig() started:");
   var config = {
     configParams: [
       {
@@ -24,8 +26,12 @@ function getConfig(request) {
                 helpText: 'This place is for password used for login',
                 placeholder: 'Enter Password Here'
             }
-    ]
+    ],
+    dateRangeRequired: false
+    
   };
+  
+  console.log("getConfig() Ended:");
   return config;
 };
 
@@ -57,6 +63,15 @@ var DepartmentSchema = [
 ];
 
 function getSchema(request) {
+  
+  console.log("Get Schema");
+   
+  if (request.configParams.CompanyID ==='' || request.configParams.UserName ==='' || request.configParams.Password ==='') {
+      throw new Error(
+        'DS_USER:Enter all the parameters'
+      );
+   }
+  
   return {schema: DepartmentSchema};
 };
 
@@ -71,6 +86,7 @@ function getData(request) {
     }
   });
 
+  console.log("Get Data");
   var url = [
     'https://www.googleapis.com/webfonts/v1/webfonts?sort=alpha&fields=items(category%2Cfamily)&key=',
     API_KEY];
