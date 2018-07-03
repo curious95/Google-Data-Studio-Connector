@@ -1,8 +1,32 @@
-var API_KEY = "YOUR_API_KEY";
+var API_KEY = "";
 
 function isAdminUser(){
 
   return true;
+}
+
+function getKey(CompanyID,UserName,Password){
+  var blob = Utilities.newBlob(CompanyID+":"+UserName+":"+Password);
+  var encoded = Utilities.base64Encode(blob.getBytes());
+  
+  var headers = {
+    'Authorization': "Basic "+encoded,
+    'Content-Type':'application/json; charset=UTF-8'
+  };
+  
+  var data = {
+  };
+  
+  var options = {
+    'method' : 'post',
+    'contentType': 'application/json',
+    'payload' : JSON.stringify(data),
+    'headers' : headers
+  };
+  
+  var response = UrlFetchApp.fetch('https://easylink.easyclocking.net/api/sekureid/external/login', options);
+  console.log(response.getAllHeaders().toSource());
+
 }
 
 function getConfig(request) {
@@ -66,11 +90,23 @@ function getSchema(request) {
   
   console.log("Get Schema");
    
-  if (request.configParams.CompanyID ==='' || request.configParams.UserName ==='' || request.configParams.Password ==='') {
+  if (request.configParams.CompanyID ==='') {
       throw new Error(
-        'DS_USER:Enter all the parameters'
+        'DS_USER:Enter CompanyID'
       );
    }
+  if (request.configParams.UserName ==='') {
+      throw new Error(
+        'DS_USER:Enter User Name'
+      );
+   }
+  if (request.configParams.Password ==='') {
+      throw new Error(
+        'DS_USER:Enter Password'
+      );
+   }
+  
+  getKey(request.configParams.CompanyID,request.configParams.UserName,request.configParams.Password);
   
   return {schema: DepartmentSchema};
 };
