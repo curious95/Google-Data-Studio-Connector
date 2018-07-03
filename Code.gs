@@ -149,21 +149,21 @@ function getData(request) {
     getData(request);
   }
   
-  //var response = JSON.parse(UrlFetchApp.fetch(url.join(''))).items;
+  var response = JSON.parse(response.getContentText());
 
   var data = [];
-  response.forEach(function(font) {
+  response.forEach(function(department) {
     var values = [];
     dataSchema.forEach(function(field) {
       switch(field.name) {
-        case 'family':
-          values.push(font.family);
+        case 'departmentCode':
+          values.push(department.departmentCode);
           break;
-        case 'category':
-          values.push(font.category);
+        case 'departmentName':
+          values.push(department.departmentName);
           break;
-        case 'count':
-          values.push(1);
+        case 'correlationID':
+          values.push(department.correlationID);
           break;
         default:
           values.push('');
