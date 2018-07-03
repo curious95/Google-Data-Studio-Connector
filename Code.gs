@@ -1,4 +1,3 @@
-var API_KEY = "";
 
 function isAdminUser(){
 
@@ -25,7 +24,11 @@ function getKey(CompanyID,UserName,Password){
   };
   
   var response = UrlFetchApp.fetch('https://easylink.easyclocking.net/api/sekureid/external/login', options);
-  console.log(response.getAllHeaders().toSource());
+  //API_KEY=response.getAllHeaders()['x-accesstoken'];
+  
+  PropertiesService.getScriptProperties().setProperty('API_KEY',API_KEY=response.getAllHeaders()['x-accesstoken']);
+
+  console.log(response.getAllHeaders()['x-accesstoken']);
 
 }
 
@@ -123,10 +126,30 @@ function getData(request) {
   });
 
   console.log("Get Data");
-  var url = [
-    'https://www.googleapis.com/webfonts/v1/webfonts?sort=alpha&fields=items(category%2Cfamily)&key=',
-    API_KEY];
-  var response = JSON.parse(UrlFetchApp.fetch(url.join(''))).items;
+  
+  //Request to get departments
+  var headers = {
+    'x-accesstoken':  PropertiesService.getScriptProperties().getProperty('API_KEY')
+  };
+  
+  var options = {
+    'method' : 'get',
+    'headers' : headers
+  };
+  
+  console.log("API_KEY_USEF"+ PropertiesService.getScriptProperties().getProperty('API_KEY'))
+  var response = UrlFetchApp.fetch('https://easylink.easyclocking.net/api/sekureid/external/Department', options);
+  console.log(response);
+  
+  
+  if(response.getResponseCode()!=200){
+    getKey(request.configParams.CompanyID,request.configParams.UserName,request.configParams.Password);
+    response = UrlFetchApp.fetch('https://easylink.easyclocking.net/api/sekureid/external/Department', options);
+    console.log(response);
+    getData(request);
+  }
+  
+  //var response = JSON.parse(UrlFetchApp.fetch(url.join(''))).items;
 
   var data = [];
   response.forEach(function(font) {
